@@ -1,36 +1,267 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Yogi Blevins
+
+A modern, extensible personal website built with [Next.js 16](https://nextjs.org), React 19, TypeScript, and Tailwind CSS 4.
 
 ## Getting Started
 
-First, run the development server:
+First, install dependencies and run the development server:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+pnpm install
 pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+app/
+├── components/           # Shared/reusable components
+│   ├── index.ts          # Barrel exports for clean imports
+│   ├── Navigation.tsx    # Site-wide navigation component
+│   ├── PageLayout.tsx    # Reusable page wrapper
+│   └── Section.tsx       # Reusable section component
+├── Pages/                # Page modules (each page is a folder)
+│   └── Home/
+│       ├── index.tsx     # Home page entry point
+│       ├── Hero.tsx      # Hero section component
+│       └── components/   # Home-specific components
+│           └── index.ts  # Barrel exports
+├── globals.css           # Global styles and CSS variables
+├── layout.tsx            # Root layout (fonts, metadata)
+└── page.tsx              # Main entry point (routes to Home)
+```
+
+## How to Add a New Page
+
+### Step 1: Create the Page Folder
+
+Create a new folder under `app/Pages/` with your page name:
+
+```
+app/Pages/About/
+├── index.tsx             # Page entry point
+├── AboutHero.tsx         # Page-specific sections
+├── Bio.tsx
+└── components/
+    └── index.ts          # Barrel exports for page components
+```
+
+### Step 2: Create the Page Component
+
+Create `app/Pages/About/index.tsx`:
+
+```tsx
+import PageLayout from "@/app/components/PageLayout";
+import AboutHero from "./AboutHero";
+import Bio from "./Bio";
+
+export default function AboutPage() {
+  return (
+    <PageLayout>
+      <AboutHero />
+      <Bio />
+    </PageLayout>
+  );
+}
+```
+
+### Step 3: Create Page Sections
+
+Create section components using the `Section` wrapper:
+
+```tsx
+// app/Pages/About/AboutHero.tsx
+import Section from "@/app/components/Section";
+
+export default function AboutHero() {
+  return (
+    <Section className="flex min-h-[50vh] items-center justify-center bg-primary-bg">
+      <h1 className="font-serif text-5xl font-bold text-primary-text">
+        About Me
+      </h1>
+    </Section>
+  );
+}
+```
+
+### Step 4: Add the Route
+
+For Next.js App Router, create a route file at `app/about/page.tsx`:
+
+```tsx
+import AboutPage from "@/app/Pages/About";
+
+export default function Page() {
+  return <AboutPage />;
+}
+```
+
+## How to Add Navigation Items
+
+### For Anchor Links (Same Page Sections)
+
+Edit the `navItems` array in `app/components/Navigation.tsx`:
+
+```tsx
+const navItems: NavItem[] = [
+  { label: "About", href: "#about" },
+  { label: "Videos", href: "#videos" },
+  { label: "Blog", href: "#blog" },
+  { label: "Contact", href: "#contact" },
+];
+```
+
+Make sure your section has a matching `id`:
+
+```tsx
+<Section id="about" className="...">
+  {/* Section content */}
+</Section>
+```
+
+### For Page Links (Separate Pages)
+
+Add the page route to the navigation:
+
+```tsx
+const navItems: NavItem[] = [
+  { label: "Home", href: "/" },
+  { label: "About", href: "/about" },
+  { label: "Projects", href: "/projects" },
+  { label: "Contact", href: "/contact" },
+];
+```
+
+## Adding the Navigation to Your Site
+
+Import and add `Navigation` to your layout or page:
+
+```tsx
+// Option 1: In app/layout.tsx (appears on all pages)
+import Navigation from "@/app/components/Navigation";
+
+export default function RootLayout({ children }) {
+  return (
+    <html lang="en">
+      <body>
+        <Navigation />
+        {children}
+      </body>
+    </html>
+  );
+}
+
+// Option 2: In individual pages
+import Navigation from "@/app/components/Navigation";
+import PageLayout from "@/app/components/PageLayout";
+
+export default function HomePage() {
+  return (
+    <PageLayout>
+      <Navigation />
+      <Hero />
+    </PageLayout>
+  );
+}
+```
+
+## Component Reference
+
+### PageLayout
+
+A wrapper component for consistent page structure.
+
+```tsx
+import PageLayout from "@/app/components/PageLayout";
+
+<PageLayout className="optional-additional-classes">
+  {/* Page sections go here */}
+</PageLayout>;
+```
+
+### Section
+
+A semantic section wrapper with optional styling.
+
+```tsx
+import Section from "@/app/components/Section";
+
+<Section
+  id="about" // Optional: for anchor links
+  className="flex items-center" // Optional: Tailwind classes
+  style={{ background: "#fff" }} // Optional: inline styles
+>
+  {/* Section content */}
+</Section>;
+```
+
+### Navigation
+
+Fixed navigation header with mobile menu support.
+
+| Feature            | Description                              |
+| ------------------ | ---------------------------------------- |
+| Scroll detection   | Background becomes opaque on scroll      |
+| Mobile menu        | Animated hamburger menu on small screens |
+| Smooth transitions | All interactions are animated            |
+
+## Theming
+
+All theme colors are defined as CSS variables in `app/globals.css`:
+
+```css
+@theme inline {
+  --color-primary-bg: #f8ede3; /* Main background */
+  --color-primary-text: #798777; /* Main text color */
+  --color-secondary-bg: #ffffff; /* Secondary backgrounds */
+  --color-secondary-text: #a2b29f; /* Secondary text */
+  --color-accent: #bdd2b6; /* Accent color */
+  --color-accent-hover: #a8c4a0; /* Accent hover state */
+  --color-primary-text-hover: #667766;
+  --color-primary-text-muted: #8a9b88;
+}
+```
+
+Use these in Tailwind classes:
+
+```tsx
+<div className="bg-primary-bg text-primary-text">
+  <span className="text-accent hover:text-accent-hover">Link</span>
+</div>
+```
+
+## Fonts
+
+Three font families are configured:
+
+| Variable       | Font             | Usage                  |
+| -------------- | ---------------- | ---------------------- |
+| `--font-sans`  | Geist Sans       | Body text, UI elements |
+| `--font-mono`  | Geist Mono       | Code blocks            |
+| `--font-serif` | Playfair Display | Headings, titles       |
+
+Use in Tailwind:
+
+```tsx
+<h1 className="font-serif">Elegant Heading</h1>
+<p className="font-sans">Body text</p>
+<code className="font-mono">code</code>
+```
+
+## Deployment
+
+The easiest way to deploy is with [Vercel](https://vercel.com/new):
+
+```bash
+pnpm build
+```
+
+Check the [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more options.
 
 ## Learn More
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- [Next.js Documentation](https://nextjs.org/docs)
+- [Tailwind CSS v4 Documentation](https://tailwindcss.com/docs)
+- [React 19 Documentation](https://react.dev)
