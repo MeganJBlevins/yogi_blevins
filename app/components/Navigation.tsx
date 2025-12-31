@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import Link from "next/link";
+import { useCallback, useEffect, useState } from "react";
 
 interface NavItem {
   label: string;
@@ -39,9 +39,24 @@ export default function Navigation() {
     };
   }, [isOpen]);
 
-  const handleNavClick = () => {
+  const handleNavClick = useCallback((e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
     setIsOpen(false);
-  };
+    
+    const targetId = href.replace("#", "");
+    const element = document.getElementById(targetId);
+    
+    if (element) {
+      const navHeight = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--nav-height')) || 72;
+      const elementPosition = element.getBoundingClientRect().top + window.scrollY;
+      const offsetPosition = elementPosition - navHeight;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth"
+      });
+    }
+  }, []);
 
   return (
     <header
@@ -62,13 +77,14 @@ export default function Navigation() {
         <ul className="hidden items-center gap-1 md:flex">
           {navItems.map((item) => (
             <li key={item.href}>
-              <Link
+              <a
                 href={item.href}
+                onClick={(e) => handleNavClick(e, item.href)}
                 className="group relative px-4 py-2 text-sm font-medium tracking-wide text-primary-text transition-colors duration-200 hover:text-primary-text-hover"
               >
                 {item.label}
                 <span className="absolute bottom-0 left-1/2 h-0.5 w-0 -translate-x-1/2 bg-accent transition-all duration-300 group-hover:w-3/4" />
-              </Link>
+              </a>
             </li>
           ))}
         </ul>
@@ -119,14 +135,14 @@ export default function Navigation() {
                   transitionDelay: isOpen ? `${index * 75 + 100}ms` : "0ms",
                 }}
               >
-                <Link
+                <a
                   href={item.href}
-                  onClick={handleNavClick}
+                  onClick={(e) => handleNavClick(e, item.href)}
                   className="group relative font-serif text-3xl font-medium tracking-wide text-primary-text transition-colors duration-200 hover:text-primary-text-hover"
                 >
                   {item.label}
                   <span className="absolute -bottom-2 left-0 h-0.5 w-0 bg-accent transition-all duration-300 group-hover:w-full" />
-                </Link>
+                </a>
               </li>
             ))}
           </ul>
