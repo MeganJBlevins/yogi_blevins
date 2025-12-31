@@ -1,12 +1,15 @@
+import { Mandala } from "@/app/components";
 import Section from "@/app/components/Section";
 import Image from "next/image";
 
 interface HeroProps {
   imageSrc?: string;
+  mandalaColor?: string;
 }
 
 export default function Hero({ 
-  imageSrc = "/Hero-Grasshopper.png"
+  imageSrc = "/Hero-Grasshopper.png",
+  mandalaColor = "#798777"
 }: HeroProps) {
   return (
     <Section
@@ -35,14 +38,7 @@ export default function Hero({
         className="pointer-events-none absolute right-0 top-3/4 z-[1] h-[600px] w-[600px] -translate-y-1/2 translate-x-1/2 opacity-10 md:h-[720px] md:w-[720px] lg:-translate-y-[30%] lg:h-[90vw] lg:w-[90vw]"
         aria-hidden="true"
       >
-        <div className="relative h-full w-full animate-spin-slow">
-          <Image
-            src="/geometric-mandala.svg"
-            alt=""
-            fill
-            className="object-contain"
-          />
-        </div>
+        <Mandala color={mandalaColor} />
       </div>
     </Section>
   );

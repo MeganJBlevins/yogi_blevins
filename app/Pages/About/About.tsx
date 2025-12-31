@@ -1,12 +1,15 @@
+import { Mandala } from "@/app/components";
 import Section from "@/app/components/Section";
 import Image from "next/image";
 
 interface AboutProps {
   imageSrc?: string;
+  mandalaColor?: string;
 }
 
 export default function About({ 
-  imageSrc = "/About-Me.png"
+  imageSrc = "/About-Me.png",
+  mandalaColor = "#798777"
 }: AboutProps) {
   return (
     <Section
@@ -15,15 +18,8 @@ export default function About({
       style={{ backgroundColor: "#F8EDE3" }}
     >
       <div className="pointer-events-none absolute inset-0 opacity-[0.03]" aria-hidden="true">
-        <div className="absolute right-0 top-1/2 h-[800px] w-[800px] -translate-y-1/2 translate-x-1/4">
-          <div className="relative h-full w-full animate-spin-slow">
-            <Image
-              src="/geometric-mandala.svg"
-              alt=""
-              fill
-              className="object-contain"
-            />
-          </div>
+        <div className="absolute left-0 top-3/4 h-[800px] w-[800px] -translate-x-1/4 -translate-y-1/2">
+          <Mandala color={mandalaColor} />
         </div>
       </div>
 
@@ -36,7 +32,7 @@ export default function About({
             
             <div className="mt-8 space-y-6">
               <p className="text-lg leading-relaxed text-primary-text md:text-xl">
-              Megan turned to yoga after years of desk jobs, long hours of sitting, and carrying more stress than her body knew what to do with. The practice became a powerful source of strength, confidence, and calm that transformed the way she moves through her life and relationships. Her classes are designed to help students find their own version of balance — whether they’re seeking grounding, growth, or simply an hour to breathe and move. Megan brings an encouraging, down-to-earth energy to the mat and is excited to share the peace and inner steadiness yoga has brought her with anyone ready to explore it.
+              Megan turned to yoga after years of desk jobs, long hours of sitting, and carrying more stress than her body knew what to do with. The practice became a powerful source of strength, confidence, and calm that transformed the way she moves through her life and relationships. Her classes are designed to help students find their own version of balance — whether they're seeking grounding, growth, or simply an hour to breathe and move. Megan brings an encouraging, down-to-earth energy to the mat and is excited to share the peace and inner steadiness yoga has brought her with anyone ready to explore it.
               </p>
             </div>
             
