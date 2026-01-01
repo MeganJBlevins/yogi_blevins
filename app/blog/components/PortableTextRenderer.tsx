@@ -1,11 +1,11 @@
 "use client";
 
-import { PortableText, type PortableTextComponents } from "@portabletext/react";
+import { PortableText, type PortableTextComponents, type PortableTextBlock } from "@portabletext/react";
 import Image from "next/image";
 import { urlFor } from "@/src/sanity/lib/image";
 
 interface PortableTextRendererProps {
-  value: unknown[];
+  value: PortableTextBlock[];
 }
 
 const components: PortableTextComponents = {

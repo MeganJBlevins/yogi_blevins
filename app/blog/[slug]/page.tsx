@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
+import { type PortableTextBlock } from "@portabletext/react";
 import PageLayout from "@/app/components/PageLayout";
 import Section from "@/app/components/Section";
 import { Mandala } from "@/app/components";
@@ -14,7 +15,7 @@ interface Post {
   _id: string;
   title: string;
   slug: { current: string };
-  body?: unknown[];
+  body?: PortableTextBlock[];
   excerpt?: string;
   publishedAt?: string;
   mainImage?: {
