@@ -11,7 +11,7 @@ interface NavItem {
 const navItems: NavItem[] = [
   { label: "About", href: "#about" },
   { label: "Videos", href: "#videos" },
-  { label: "Blog", href: "#blog" },
+  { label: "Blog", href: "/blog" },
   { label: "Contact", href: "#contact" },
 ];
 
@@ -40,6 +40,11 @@ export default function Navigation() {
   }, [isOpen]);
 
   const handleNavClick = useCallback((e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    if (!href.startsWith("#")) {
+      setIsOpen(false);
+      return;
+    }
+    
     e.preventDefault();
     setIsOpen(false);
     
