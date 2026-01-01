@@ -1,26 +1,27 @@
 import { Divider, Mandala } from "@/app/components";
 import Section from "@/app/components/Section";
+import { sanityFetch } from "@/src/sanity/lib/live";
+import { RECENT_VIDEOS_QUERY } from "@/src/sanity/lib/queries";
+import Link from "next/link";
 
 interface Video {
-  id: string;
-  youtubeId: string;
+  _id: string;
   title: string;
+  slug: { current: string };
+  youtubeId: string;
   description: string;
+  publishedAt?: string;
+  featured?: boolean;
+  category?: {
+    _id: string;
+    title: string;
+    slug: { current: string };
+  };
 }
 
 interface VideosProps {
   mandalaColor?: string;
-  videos?: Video[];
 }
-
-const defaultVideos: Video[] = [
-  {
-    id: "1",
-    youtubeId: "dQw4w9WgXcQ",
-    title: "New Year's Twist Sequence",
-    description: "A New Year's twist sequence to wring out what no longer serves you and make space for what's to come. Building toward Side Crow, we honor the turning of the year by letting go and opening to new possibilities.",
-  }
-];
 
 function VideoCard({ video }: { video: Video }) {
   return (
@@ -35,10 +36,15 @@ function VideoCard({ video }: { video: Video }) {
         />
       </div>
       <div className="flex flex-1 flex-col p-5">
+        {video.category && (
+          <span className="mb-2 inline-block w-fit rounded-full bg-accent/20 px-3 py-1 text-xs font-medium text-primary-text">
+            {video.category.title}
+          </span>
+        )}
         <h3 className="font-serif text-xl font-semibold text-primary-text transition-colors group-hover:text-primary-text-hover">
           {video.title}
         </h3>
-        <p className="mt-2 flex-1 text-sm leading-relaxed text-primary-text-muted">
+        <p className="mt-2 flex-1 text-sm leading-relaxed text-primary-text-muted line-clamp-3">
           {video.description}
         </p>
       </div>
@@ -46,10 +52,46 @@ function VideoCard({ video }: { video: Video }) {
   );
 }
 
-export default function Videos({
+function EmptyState() {
+  return (
+    <div className="mx-auto max-w-lg py-12 text-center">
+      <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-white/20">
+        <svg
+          className="h-10 w-10"
+          style={{ color: "#F8EDE3" }}
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={1.5}
+            d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"
+          />
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={1.5}
+            d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+          />
+        </svg>
+      </div>
+      <h3 className="font-serif text-2xl font-semibold" style={{ color: "#F8EDE3" }}>
+        Videos Coming Soon
+      </h3>
+      <p className="mt-3 text-lg" style={{ color: "#F8EDE3" }}>
+        Check back soon for guided yoga sessions and practice videos!
+      </p>
+    </div>
+  );
+}
+
+export default async function Videos({
   mandalaColor = "#798777",
-  videos = defaultVideos,
 }: VideosProps) {
+  const videos = await sanityFetch<Video[]>({ query: RECENT_VIDEOS_QUERY });
+
   return (
     <Section
       id="videos"
@@ -72,15 +114,37 @@ export default function Videos({
           </p>
         </div>
 
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
-          {videos.map((video) => (
-            <VideoCard key={video.id} video={video} />
-          ))}
-        </div>
+        {videos.length > 0 ? (
+          <>
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+              {videos.map((video) => (
+                <VideoCard key={video._id} video={video} />
+              ))}
+            </div>
+
+            <div className="mt-12 text-center">
+              <Link
+                href="/videos"
+                className="group inline-flex items-center justify-center rounded-full border-2 border-[#F8EDE3] bg-transparent px-8 py-3 text-base font-medium text-[#F8EDE3] shadow-sm transition-all duration-200 hover:bg-[#F8EDE3]/10 hover:shadow-md"
+              >
+                View All Videos
+                <svg
+                  className="ml-2 h-4 w-4 transition-transform duration-200 group-hover:translate-x-1"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </Link>
+            </div>
+          </>
+        ) : (
+          <EmptyState />
+        )}
       </div>
 
       <Divider flipped className="absolute bottom-0 left-0 right-0" />
     </Section>
   );
 }
-
