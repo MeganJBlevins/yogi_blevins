@@ -290,12 +290,19 @@ This script installs:
 - pnpm
 - PM2 (process manager)
 - nginx (reverse proxy)
-- certbot (SSL certificates)
+- certbot via snap (SSL certificates - recommended for Ubuntu 22.04+)
 
 2. Set up SSL certificate (after DNS is configured):
 
 ```bash
 sudo certbot --nginx -d yourdomain.com -d www.yourdomain.com
+```
+
+**Note for Ubuntu 22.04/24.04:** If certbot isn't found after running the setup script, install it manually via snap:
+
+```bash
+sudo snap install --classic certbot
+sudo ln -sf /snap/bin/certbot /usr/bin/certbot
 ```
 
 #### GitHub Repository Secrets

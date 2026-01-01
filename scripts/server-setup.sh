@@ -21,7 +21,11 @@ echo "=== Updating system packages ==="
 sudo apt update && sudo apt upgrade -y
 
 echo "=== Installing required packages ==="
-sudo apt install -y curl git nginx certbot python3-certbot-nginx
+sudo apt install -y curl git nginx snapd
+
+echo "=== Installing certbot via snap ==="
+sudo snap install --classic certbot
+sudo ln -sf /snap/bin/certbot /usr/bin/certbot
 
 echo "=== Installing Node.js 20.x ==="
 curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
