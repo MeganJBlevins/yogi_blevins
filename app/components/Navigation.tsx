@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 
 interface NavItem {
@@ -9,15 +10,16 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
-  { label: "About", href: "#about" },
-  { label: "Videos", href: "#videos" },
+  { label: "About", href: "/#about" },
+  { label: "Videos", href: "/#videos" },
   { label: "Blog", href: "/blog" },
-  { label: "Contact", href: "#contact" },
+  { label: "Contact", href: "/#contact" },
 ];
 
 export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -39,18 +41,8 @@ export default function Navigation() {
     };
   }, [isOpen]);
 
-  const handleNavClick = useCallback((e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    if (!href.startsWith("#")) {
-      setIsOpen(false);
-      return;
-    }
-    
-    e.preventDefault();
-    setIsOpen(false);
-    
-    const targetId = href.replace("#", "");
+  const scrollToElement = useCallback((targetId: string) => {
     const element = document.getElementById(targetId);
-    
     if (element) {
       const navHeight = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--nav-height')) || 72;
       const elementPosition = element.getBoundingClientRect().top + window.scrollY;
@@ -62,6 +54,33 @@ export default function Navigation() {
       });
     }
   }, []);
+
+  useEffect(() => {
+    if (pathname === "/" && window.location.hash) {
+      const targetId = window.location.hash.replace("#", "");
+      setTimeout(() => {
+        scrollToElement(targetId);
+      }, 100);
+    }
+  }, [pathname, scrollToElement]);
+
+  const handleNavClick = useCallback((e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    setIsOpen(false);
+
+    const isHashLink = href.startsWith("/#") || href.startsWith("#");
+    
+    if (!isHashLink) {
+      return;
+    }
+
+    const targetId = href.replace("/#", "").replace("#", "");
+    const isHomePage = pathname === "/";
+
+    if (isHomePage) {
+      e.preventDefault();
+      scrollToElement(targetId);
+    }
+  }, [pathname, scrollToElement]);
 
   return (
     <header
