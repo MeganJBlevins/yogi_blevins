@@ -13,7 +13,7 @@ export default function Hero({
 }: HeroProps) {
   return (
     <Section
-      className="relative flex min-h-[600px] items-start justify-start overflow-hidden"
+      className="relative flex min-h-[600px] items-start justify-start overflow-x-clip overflow-y-visible"
       style={{ backgroundColor: "#F8EDE3" }}
     >
       <div className="relative z-10 flex h-full min-h-[600px] items-center lg:translate-y-[20%]">
