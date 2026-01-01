@@ -15,9 +15,15 @@ export default function Contact({
   return (
     <Section
       id="contact"
-      className="relative overflow-hidden py-20 lg:py-32"
+      className="relative py-20 lg:py-32"
       style={{ backgroundColor: "#A2B29F" }}
     >
+      <div
+        className="pointer-events-none absolute -left-8 -top-20 h-[800px] w-[800px] opacity-15"
+        aria-hidden="true"
+      >
+        <Mandala color="#F8EDE3" />
+      </div>
 
       <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mb-12 text-right lg:mb-16">
@@ -36,14 +42,8 @@ export default function Contact({
         </div>
 
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-16">
-          <div className="relative flex flex-col justify-center">
-            <div
-              className="pointer-events-none absolute -left-36 top-[-20%] h-[800px] w-[800px] -translate-y-1/4 opacity-15"
-              aria-hidden="true"
-            >
-              <Mandala color="#F8EDE3" />
-            </div>
-            <div className="relative z-10 space-y-8">
+          <div className="flex flex-col justify-center">
+            <div className="space-y-8">
               <div className="flex items-start gap-5">
                 <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl bg-[#F8EDE3]/20">
                   <svg

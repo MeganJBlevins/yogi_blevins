@@ -14,7 +14,7 @@ export default function About({
   return (
     <Section
       id="about"
-      className="relative overflow-hidden py-20 lg:py-32"
+      className="relative py-20 lg:py-32"
       style={{ backgroundColor: "#F8EDE3" }}
     >
       <div className="pointer-events-none absolute inset-0 opacity-[0.03]" aria-hidden="true">

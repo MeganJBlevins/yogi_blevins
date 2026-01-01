@@ -1,10 +1,10 @@
-import Link from "next/link";
-import Image from "next/image";
 import { Mandala } from "@/app/components";
 import Section from "@/app/components/Section";
+import { urlFor } from "@/src/sanity/lib/image";
 import { sanityFetch } from "@/src/sanity/lib/live";
 import { RECENT_UPCOMING_EVENTS_QUERY } from "@/src/sanity/lib/queries";
-import { urlFor } from "@/src/sanity/lib/image";
+import Image from "next/image";
+import Link from "next/link";
 
 interface Event {
   _id: string;
@@ -177,11 +177,11 @@ export default async function Events({
   return (
     <Section
       id="events"
-      className="relative overflow-hidden py-20 lg:py-32"
+      className="relative py-20 lg:py-32"
       style={{ backgroundColor: "#F8EDE3" }}
     >
       <div className="pointer-events-none absolute inset-0 opacity-[0.03]" aria-hidden="true">
-        <div className="absolute -left-32 top-1/4 h-[800px] w-[800px] -translate-y-1/2">
+        <div className="absolute -right-32 bottom-0 h-[800px] w-[800px] translate-y-1/4">
           <Mandala color={mandalaColor} />
         </div>
       </div>

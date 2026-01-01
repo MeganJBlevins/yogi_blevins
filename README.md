@@ -252,10 +252,113 @@ Use in Tailwind:
 
 ## Deployment
 
+### Option 1: Vercel (Recommended for simplicity)
+
 The easiest way to deploy is with [Vercel](https://vercel.com/new):
 
 ```bash
 pnpm build
+```
+
+### Option 2: Digital Ocean Droplet (Self-hosted)
+
+This project includes a complete GitHub Actions CI/CD pipeline for deploying to a Digital Ocean droplet.
+
+#### Prerequisites
+
+- A Digital Ocean droplet running Ubuntu 22.04+
+- A domain name pointed to your droplet's IP
+- SSH access to your droplet
+
+#### Initial Server Setup
+
+1. SSH into your droplet and run the setup script:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/YOUR_USERNAME/yogi_blevins/main/scripts/server-setup.sh | bash
+```
+
+Or manually copy `scripts/server-setup.sh` to your server and run it:
+
+```bash
+chmod +x server-setup.sh
+./server-setup.sh
+```
+
+This script installs:
+- Node.js 20.x
+- pnpm
+- PM2 (process manager)
+- nginx (reverse proxy)
+- certbot (SSL certificates)
+
+2. Set up SSL certificate (after DNS is configured):
+
+```bash
+sudo certbot --nginx -d yourdomain.com -d www.yourdomain.com
+```
+
+#### GitHub Repository Secrets
+
+Add these secrets to your GitHub repository (Settings → Secrets and variables → Actions):
+
+| Secret | Description |
+|--------|-------------|
+| `DROPLET_HOST` | Your droplet's IP address or hostname |
+| `DROPLET_USER` | SSH username (e.g., `root` or your username) |
+| `DROPLET_SSH_KEY` | Your private SSH key (entire key content) |
+| `DROPLET_SSH_PORT` | SSH port (default: 22) |
+| `NEXT_PUBLIC_SANITY_PROJECT_ID` | Sanity project ID (`xyhoulob`) |
+| `NEXT_PUBLIC_SANITY_DATASET` | Sanity dataset name (`production`) |
+
+#### Generate a Deploy Key
+
+On your droplet:
+
+```bash
+ssh-keygen -t ed25519 -C 'github-deploy-key' -f ~/.ssh/github_deploy
+cat ~/.ssh/github_deploy.pub
+```
+
+- Add the **public key** to `~/.ssh/authorized_keys` on your droplet
+- Add the **private key** as `DROPLET_SSH_KEY` secret in GitHub
+
+#### Triggering Deployments
+
+Deployments are triggered automatically when you push to the `main` branch. You can also trigger a manual deployment from the Actions tab in GitHub.
+
+#### Deployment Process
+
+The GitHub Action will:
+1. Build the Next.js application
+2. Create a deployment package
+3. Copy files to your server via SCP
+4. Install production dependencies
+5. Restart the application with PM2
+6. Run a health check to verify the deployment
+
+#### Monitoring
+
+On your server, you can monitor the application with:
+
+```bash
+pm2 status              # View process status
+pm2 logs yogi-blevins   # View application logs
+pm2 monit               # Real-time monitoring
+```
+
+#### Rollback
+
+If a deployment fails, the previous version is backed up. To rollback:
+
+```bash
+# List available backups
+ls -la /var/www/yogi_blevins_backup_*
+
+# Restore a backup (replace with actual backup folder name)
+sudo rm -rf /var/www/yogi_blevins
+sudo cp -r /var/www/yogi_blevins_backup_YYYYMMDD_HHMMSS /var/www/yogi_blevins
+pm2 reload yogi-blevins
 ```
 
 Check the [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more options.
