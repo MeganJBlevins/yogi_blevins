@@ -104,3 +104,76 @@ export const VIDEOS_BY_CATEGORY_QUERY = defineQuery(`
     "category": category->{ _id, title, slug }
   }
 `)
+
+export const UPCOMING_EVENTS_QUERY = defineQuery(`
+  *[_type == "event" && defined(slug.current) && eventDate >= now()] | order(eventDate asc) {
+    _id,
+    title,
+    slug,
+    description,
+    eventDate,
+    endDate,
+    location,
+    registrationUrl,
+    image,
+    featured,
+    "category": category->{ _id, title, slug }
+  }
+`)
+
+export const RECENT_UPCOMING_EVENTS_QUERY = defineQuery(`
+  *[_type == "event" && defined(slug.current) && eventDate >= now()] | order(eventDate asc)[0...4] {
+    _id,
+    title,
+    slug,
+    description,
+    eventDate,
+    endDate,
+    location,
+    registrationUrl,
+    image,
+    featured,
+    "category": category->{ _id, title, slug }
+  }
+`)
+
+export const EVENT_QUERY = defineQuery(`
+  *[_type == "event" && slug.current == $slug][0] {
+    _id,
+    title,
+    slug,
+    description,
+    eventDate,
+    endDate,
+    location,
+    registrationUrl,
+    image,
+    featured,
+    "category": category->{ _id, title, slug }
+  }
+`)
+
+export const EVENT_CATEGORIES_QUERY = defineQuery(`
+  *[_type == "eventCategory"] | order(title asc) {
+    _id,
+    title,
+    slug,
+    description
+  }
+`)
+
+export const UPCOMING_EVENTS_BY_CATEGORY_QUERY = defineQuery(`
+  *[_type == "event" && category._ref == $categoryId && eventDate >= now()] | order(eventDate asc) {
+    _id,
+    title,
+    slug,
+    description,
+    eventDate,
+    endDate,
+    location,
+    registrationUrl,
+    image,
+    featured,
+    "category": category->{ _id, title, slug }
+  }
+`)

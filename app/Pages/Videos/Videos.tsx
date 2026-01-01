@@ -1,4 +1,4 @@
-import { Divider, Mandala } from "@/app/components";
+import { Mandala } from "@/app/components";
 import Section from "@/app/components/Section";
 import { sanityFetch } from "@/src/sanity/lib/live";
 import { RECENT_VIDEOS_QUERY } from "@/src/sanity/lib/queries";
@@ -143,8 +143,6 @@ export default async function Videos({
           <EmptyState />
         )}
       </div>
-
-      <Divider flipped className="absolute bottom-0 left-0 right-0" />
     </Section>
   );
 }

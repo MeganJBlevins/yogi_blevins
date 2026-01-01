@@ -3,6 +3,7 @@ import { Divider } from "@/app/components";
 import Hero from "./Hero";
 import About from "@/app/Pages/About/About";
 import Videos from "@/app/Pages/Videos/Videos";
+import Events from "@/app/Pages/Events/Events";
 
 export default function HomePage() {
   return (
@@ -11,6 +12,8 @@ export default function HomePage() {
       <About />
       <Divider />
       <Videos />
+      <Divider flipped />
+      <Events />
     </PageLayout>
   );
 }
