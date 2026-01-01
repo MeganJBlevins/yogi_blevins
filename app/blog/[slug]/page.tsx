@@ -21,11 +21,6 @@ interface Post {
     asset: { _ref: string };
     alt?: string;
   };
-  author?: {
-    name: string;
-    image?: { asset: { _ref: string } };
-    bio?: unknown[];
-  };
   categories?: Array<{
     _id: string;
     title: string;
@@ -106,12 +101,13 @@ export default async function BlogPostPage({ params }: PageProps) {
             {post.categories && post.categories.length > 0 && (
               <div className="mb-4 flex flex-wrap gap-2">
                 {post.categories.map((category) => (
-                  <span
+                  <Link
                     key={category._id}
-                    className="rounded-full bg-accent/20 px-3 py-1 text-xs font-medium text-primary-text"
+                    href={`/blog/category/${category.slug.current}`}
+                    className="rounded-full bg-accent/20 px-3 py-1 text-xs font-medium text-primary-text transition-colors hover:bg-accent/30"
                   >
                     {category.title}
-                  </span>
+                  </Link>
                 ))}
               </div>
             )}
@@ -120,30 +116,13 @@ export default async function BlogPostPage({ params }: PageProps) {
               {post.title}
             </h1>
 
-            <div className="mt-6 flex items-center gap-4">
-              {post.author && (
-                <div className="flex items-center gap-3">
-                  {post.author.image?.asset && (
-                    <Image
-                      src={urlFor(post.author.image).width(80).height(80).url()}
-                      alt={post.author.name}
-                      width={40}
-                      height={40}
-                      className="rounded-full"
-                    />
-                  )}
-                  <span className="font-medium text-primary-text">{post.author.name}</span>
-                </div>
-              )}
-              {formattedDate && (
-                <>
-                  <span className="text-accent">•</span>
-                  <time dateTime={post.publishedAt} className="text-primary-text-muted">
-                    {formattedDate}
-                  </time>
-                </>
-              )}
-            </div>
+            {formattedDate && (
+              <div className="mt-6">
+                <time dateTime={post.publishedAt} className="text-primary-text-muted">
+                  {formattedDate}
+                </time>
+              </div>
+            )}
           </div>
         </Section>
 
@@ -216,4 +195,3 @@ export default async function BlogPostPage({ params }: PageProps) {
     </PageLayout>
   );
 }
-

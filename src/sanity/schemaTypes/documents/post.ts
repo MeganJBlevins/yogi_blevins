@@ -24,12 +24,6 @@ export const post = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
-      name: 'author',
-      title: 'Author',
-      type: 'reference',
-      to: [{ type: 'author' }],
-    }),
-    defineField({
       name: 'mainImage',
       title: 'Main Image',
       type: 'image',
@@ -124,13 +118,7 @@ export const post = defineType({
   preview: {
     select: {
       title: 'title',
-      author: 'author.name',
       media: 'mainImage',
-    },
-    prepare(selection) {
-      const { author } = selection
-      return { ...selection, subtitle: author && `by ${author}` }
     },
   },
 })
-

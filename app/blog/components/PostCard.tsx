@@ -15,14 +15,6 @@ interface PostCardProps {
       };
       alt?: string;
     };
-    author?: {
-      name: string;
-      image?: {
-        asset: {
-          _ref: string;
-        };
-      };
-    };
   };
 }
 
@@ -75,28 +67,13 @@ export default function PostCard({ post }: PostCardProps) {
       )}
 
       <div className="flex flex-1 flex-col p-6">
-        <div className="flex items-center gap-3 text-sm text-primary-text-muted">
-          {post.author && (
-            <>
-              <div className="flex items-center gap-2">
-                {post.author.image?.asset && (
-                  <Image
-                    src={urlFor(post.author.image).width(32).height(32).url()}
-                    alt={post.author.name}
-                    width={24}
-                    height={24}
-                    className="rounded-full"
-                  />
-                )}
-                <span>{post.author.name}</span>
-              </div>
-              {formattedDate && <span className="text-accent">•</span>}
-            </>
-          )}
-          {formattedDate && <time dateTime={post.publishedAt}>{formattedDate}</time>}
-        </div>
+        {formattedDate && (
+          <div className="text-sm text-primary-text-muted">
+            <time dateTime={post.publishedAt}>{formattedDate}</time>
+          </div>
+        )}
 
-        <h3 className="mt-3 font-serif text-xl font-semibold leading-tight text-primary-text transition-colors duration-200 group-hover:text-primary-text-hover md:text-2xl">
+        <h3 className="mt-2 font-serif text-xl font-semibold leading-tight text-primary-text transition-colors duration-200 group-hover:text-primary-text-hover md:text-2xl">
           {post.title}
         </h3>
 
@@ -121,4 +98,3 @@ export default function PostCard({ post }: PostCardProps) {
     </article>
   );
 }
-

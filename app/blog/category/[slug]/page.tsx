@@ -21,8 +21,7 @@ const POSTS_BY_CATEGORY_QUERY = `*[_type == "post" && $categoryId in categories[
   slug,
   excerpt,
   publishedAt,
-  mainImage,
-  "author": author->{ name, image }
+  mainImage
 }`;
 
 interface Category {
@@ -41,10 +40,6 @@ interface Post {
   mainImage?: {
     asset: { _ref: string };
     alt?: string;
-  };
-  author?: {
-    name: string;
-    image?: { asset: { _ref: string } };
   };
 }
 

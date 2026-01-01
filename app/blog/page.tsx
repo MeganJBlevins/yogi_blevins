@@ -22,10 +22,6 @@ interface Post {
     asset: { _ref: string };
     alt?: string;
   };
-  author?: {
-    name: string;
-    image?: { asset: { _ref: string } };
-  };
 }
 
 interface Category {

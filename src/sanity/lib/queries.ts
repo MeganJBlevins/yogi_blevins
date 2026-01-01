@@ -7,8 +7,7 @@ export const POSTS_QUERY = defineQuery(`
     slug,
     excerpt,
     publishedAt,
-    mainImage,
-    "author": author->{ name, image }
+    mainImage
   }
 `)
 
@@ -21,7 +20,6 @@ export const POST_QUERY = defineQuery(`
     excerpt,
     publishedAt,
     mainImage,
-    "author": author->{ name, image, bio },
     "categories": categories[]->{ _id, title, slug }
   }
 `)
@@ -42,8 +40,6 @@ export const POSTS_BY_CATEGORY_QUERY = defineQuery(`
     slug,
     excerpt,
     publishedAt,
-    mainImage,
-    "author": author->{ name, image }
+    mainImage
   }
 `)
-
