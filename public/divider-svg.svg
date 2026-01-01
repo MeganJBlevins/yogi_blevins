@@ -1,0 +1,44 @@
+<svg
+  class="section-divider lotus-divider"
+  viewBox="0 0 1440 180"
+  preserveAspectRatio="none"
+  xmlns="http://www.w3.org/2000/svg"
+  aria-hidden="true"
+>
+  <!-- Main divider shape -->
+  <path
+    d="M0,120
+       C160,135 260,160 360,150
+       C500,135 560,85 720,70
+       C880,85 940,135 1080,150
+       C1180,160 1280,135 1440,120
+       L1440,180 L0,180 Z"
+    fill="#A2B29F"
+  />
+
+  <!-- Lotus / mandala linework -->
+  <g fill="none" stroke="#A2B29F" opacity="0.35" stroke-width="2">
+    <!-- center rings -->
+    <circle cx="720" cy="88" r="26" />
+    <circle cx="720" cy="88" r="44" opacity="0.55" />
+
+    <!-- lotus petals -->
+    <path d="M720 40 C704 62 704 78 720 98 C736 78 736 62 720 40 Z" />
+    <path d="M672 56 C684 76 696 88 720 104 C704 78 692 66 672 56 Z" />
+    <path d="M768 56 C756 76 744 88 720 104 C736 78 748 66 768 56 Z" />
+
+    <!-- outer petals -->
+    <path d="M628 78 C652 98 676 108 720 114 C680 92 654 82 628 78 Z" opacity="0.7" />
+    <path d="M812 78 C788 98 764 108 720 114 C760 92 786 82 812 78 Z" opacity="0.7" />
+
+    <!-- mandala ticks -->
+    <path d="M720 60 L720 72" />
+    <path d="M720 104 L720 116" />
+    <path d="M692 88 L704 88" />
+    <path d="M736 88 L748 88" />
+    <path d="M701 69 L709 77" />
+    <path d="M739 69 L731 77" />
+    <path d="M701 107 L709 99" />
+    <path d="M739 107 L731 99" />
+  </g>
+</svg>
