@@ -81,18 +81,29 @@ jobs:
             set -e
             
             APP_DIR="/var/www/yogi_blevins"
-            BACKUP_DIR="/var/www/yogi_blevins_backup_$(date +%Y%m%d_%H%M%S)"
+            BACKUP_DIR="/var/www/yogi_blevins_backup"
             
             echo "=== Starting deployment ==="
+            
+            # Pre-deployment cleanup to ensure disk space
+            echo "Cleaning up disk space..."
+            sudo rm -rf /var/www/yogi_blevins_backup_* 2>/dev/null || true
+            sudo rm -rf $BACKUP_DIR 2>/dev/null || true
+            sudo apt clean 2>/dev/null || true
+            sudo journalctl --vacuum-time=2d 2>/dev/null || true
+            pm2 flush 2>/dev/null || true
             
             # Create app directory if it doesn't exist
             sudo mkdir -p $APP_DIR
             sudo chown -R $USER:$USER $APP_DIR
             
-            # Backup current deployment (if exists)
+            # Backup only essential files (NOT node_modules)
             if [ -d "$APP_DIR/.next" ]; then
-              echo "Creating backup..."
-              sudo cp -r $APP_DIR $BACKUP_DIR
+              echo "Creating lightweight backup..."
+              mkdir -p $BACKUP_DIR
+              cp -r $APP_DIR/.next $BACKUP_DIR/ 2>/dev/null || true
+              cp $APP_DIR/package.json $BACKUP_DIR/ 2>/dev/null || true
+              cp $APP_DIR/ecosystem.config.cjs $BACKUP_DIR/ 2>/dev/null || true
             fi
             
             # Extract new deployment
@@ -100,6 +111,9 @@ jobs:
             cd $APP_DIR
             tar -xzf /tmp/deploy.tar.gz
             rm /tmp/deploy.tar.gz
+            
+            # Clean pnpm cache to save space
+            pnpm store prune 2>/dev/null || true
             
             # Install production dependencies
             echo "Installing production dependencies..."
@@ -110,15 +124,15 @@ jobs:
             if pm2 describe yogi-blevins > /dev/null 2>&1; then
               pm2 reload yogi-blevins --update-env
             else
-              pm2 start ecosystem.config.cjs
+              pm2 start ecosystem.config.cjs --env production
             fi
             
             # Save PM2 process list
             pm2 save
             
-            # Clean up old backups (keep last 3)
-            echo "Cleaning up old backups..."
-            ls -dt /var/www/yogi_blevins_backup_* 2>/dev/null | tail -n +4 | xargs -r sudo rm -rf
+            # Show disk usage
+            echo "Current disk usage:"
+            df -h /
             
             echo "=== Deployment completed successfully ==="
 
@@ -137,7 +151,14 @@ jobs:
             for i in {1..10}; do
               if curl -s -o /dev/null -w "%{http_code}" http://localhost:3000 | grep -q "200\|301\|302"; then
                 echo "✓ Application is healthy!"
+                
+                # Deployment succeeded - remove backup to save space
+                sudo rm -rf /var/www/yogi_blevins_backup 2>/dev/null || true
+                
                 pm2 status
+                echo ""
+                echo "Disk usage after deployment:"
+                df -h /
                 exit 0
               fi
               echo "Waiting for application... (attempt $i/10)"
@@ -145,6 +166,12 @@ jobs:
             done
             
             echo "✗ Health check failed!"
+            echo "Attempting rollback from backup..."
+            if [ -d "/var/www/yogi_blevins_backup/.next" ]; then
+              cp -r /var/www/yogi_blevins_backup/.next /var/www/yogi_blevins/
+              pm2 reload yogi-blevins
+              sleep 3
+            fi
             pm2 logs yogi-blevins --lines 50
             exit 1
 
