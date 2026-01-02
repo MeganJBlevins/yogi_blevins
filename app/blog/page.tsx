@@ -1,11 +1,11 @@
-import { Metadata } from "next";
+import { Mandala } from "@/app/components";
 import PageLayout from "@/app/components/PageLayout";
 import Section from "@/app/components/Section";
-import { Mandala } from "@/app/components";
 import { sanityFetch } from "@/src/sanity/lib/live";
-import { POSTS_QUERY, CATEGORIES_QUERY } from "@/src/sanity/lib/queries";
-import { PostCard } from "./components";
+import { CATEGORIES_QUERY, POSTS_QUERY } from "@/src/sanity/lib/queries";
+import { Metadata } from "next";
 import Link from "next/link";
+import { PostCard } from "./components";
 
 export const metadata: Metadata = {
   title: "Blog | Yogi Blevins",

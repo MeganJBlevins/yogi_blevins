@@ -1,5 +1,8 @@
+"use client";
+
 import { Mandala } from "@/app/components";
 import Section from "@/app/components/Section";
+import { ChangeEvent, FormEvent, useState } from "react";
 
 interface ContactProps {
   mandalaColor?: string;
@@ -7,11 +10,79 @@ interface ContactProps {
   phone?: string;
 }
 
+interface FormData {
+  firstName: string;
+  lastName: string;
+  email: string;
+  subject: string;
+  message: string;
+}
+
+type FormStatus = "idle" | "submitting" | "success" | "error";
+
 export default function Contact({
   mandalaColor = "#798777",
-  email = "megan@yogiblevins.com",
-  phone = "(555) 123-4567",
+  email = "meganjblevins@gmail.com",
+  phone = "(417) 718-4470",
 }: ContactProps) {
+  const [formData, setFormData] = useState<FormData>({
+    firstName: "",
+    lastName: "",
+    email: "",
+    subject: "",
+    message: "",
+  });
+  const [status, setStatus] = useState<FormStatus>("idle");
+  const [errorMessage, setErrorMessage] = useState<string>("");
+
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setStatus("submitting");
+    setErrorMessage("");
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Something went wrong");
+      }
+
+      setStatus("success");
+      setFormData({
+        firstName: "",
+        lastName: "",
+        email: "",
+        subject: "",
+        message: "",
+      });
+    } catch (error) {
+      setStatus("error");
+      setErrorMessage(
+        error instanceof Error ? error.message : "Failed to send message"
+      );
+    }
+  };
+
+  const resetForm = () => {
+    setStatus("idle");
+    setErrorMessage("");
+  };
+
   return (
     <Section
       id="contact"
@@ -124,109 +195,193 @@ export default function Contact({
           </div>
 
           <div className="rounded-3xl bg-[#F8EDE3]/95 p-8 shadow-xl backdrop-blur-sm lg:p-10">
-            <h3 className="font-serif text-2xl font-semibold text-primary-text">
-                Send a Message
-              </h3>
-            <p className="mt-2 text-primary-text-muted">
-              Fill out the form below and I&apos;ll get back to you soon.
-            </p>
-
-            <form className="mt-8 space-y-6">
-              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-                <div>
-                  <label
-                    htmlFor="firstName"
-                    className="block text-sm font-medium text-primary-text"
+            {status === "success" ? (
+              <div className="flex flex-col items-center justify-center py-12 text-center">
+                <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-green-100">
+                  <svg
+                    className="h-8 w-8 text-green-600"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
                   >
-                    First Name
-                  </label>
-                  <input
-                    type="text"
-                    id="firstName"
-                    name="firstName"
-                    autoComplete="given-name"
-                    className="mt-2 block w-full rounded-xl border-2 border-accent/30 bg-white px-4 py-3 text-primary-text placeholder-primary-text-muted/60 transition-all duration-200 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20"
-                    placeholder="Jane"
-                  />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
                 </div>
-                <div>
-                  <label
-                    htmlFor="lastName"
-                    className="block text-sm font-medium text-primary-text"
+                <h3 className="font-serif text-2xl font-semibold text-primary-text">
+                  Message Sent!
+                </h3>
+                <p className="mt-3 text-primary-text-muted">
+                  Thank you for reaching out. I&apos;ll get back to you within 24-48 hours.
+                </p>
+                <button
+                  onClick={resetForm}
+                  className="mt-8 rounded-full bg-accent px-6 py-3 text-sm font-medium text-primary-text transition-all duration-200 hover:bg-accent-hover"
+                >
+                  Send Another Message
+                </button>
+              </div>
+            ) : (
+              <>
+                <h3 className="font-serif text-2xl font-semibold text-primary-text">
+                  Send a Message
+                </h3>
+                <p className="mt-2 text-primary-text-muted">
+                  Fill out the form below and I&apos;ll get back to you soon.
+                </p>
+
+                {status === "error" && (
+                  <div className="mt-4 rounded-xl border border-red-200 bg-red-50 p-4">
+                    <p className="text-sm text-red-700">{errorMessage}</p>
+                  </div>
+                )}
+
+                <form onSubmit={handleSubmit} className="mt-8 space-y-6">
+                  <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                    <div>
+                      <label
+                        htmlFor="firstName"
+                        className="block text-sm font-medium text-primary-text"
+                      >
+                        First Name <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        id="firstName"
+                        name="firstName"
+                        autoComplete="given-name"
+                        required
+                        value={formData.firstName}
+                        onChange={handleChange}
+                        disabled={status === "submitting"}
+                        className="mt-2 block w-full rounded-xl border-2 border-accent/30 bg-white px-4 py-3 text-primary-text placeholder-primary-text-muted/60 transition-all duration-200 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20 disabled:cursor-not-allowed disabled:opacity-60"
+                        placeholder="Jane"
+                      />
+                    </div>
+                    <div>
+                      <label
+                        htmlFor="lastName"
+                        className="block text-sm font-medium text-primary-text"
+                      >
+                        Last Name <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        id="lastName"
+                        name="lastName"
+                        autoComplete="family-name"
+                        required
+                        value={formData.lastName}
+                        onChange={handleChange}
+                        disabled={status === "submitting"}
+                        className="mt-2 block w-full rounded-xl border-2 border-accent/30 bg-white px-4 py-3 text-primary-text placeholder-primary-text-muted/60 transition-all duration-200 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20 disabled:cursor-not-allowed disabled:opacity-60"
+                        placeholder="Doe"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label
+                      htmlFor="email"
+                      className="block text-sm font-medium text-primary-text"
+                    >
+                      Email <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      autoComplete="email"
+                      required
+                      value={formData.email}
+                      onChange={handleChange}
+                      disabled={status === "submitting"}
+                      className="mt-2 block w-full rounded-xl border-2 border-accent/30 bg-white px-4 py-3 text-primary-text placeholder-primary-text-muted/60 transition-all duration-200 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20 disabled:cursor-not-allowed disabled:opacity-60"
+                      placeholder="jane@example.com"
+                    />
+                  </div>
+
+                  <div>
+                    <label
+                      htmlFor="subject"
+                      className="block text-sm font-medium text-primary-text"
+                    >
+                      Subject
+                    </label>
+                    <input
+                      type="text"
+                      id="subject"
+                      name="subject"
+                      value={formData.subject}
+                      onChange={handleChange}
+                      disabled={status === "submitting"}
+                      className="mt-2 block w-full rounded-xl border-2 border-accent/30 bg-white px-4 py-3 text-primary-text placeholder-primary-text-muted/60 transition-all duration-200 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20 disabled:cursor-not-allowed disabled:opacity-60"
+                      placeholder="Private session inquiry"
+                    />
+                  </div>
+
+                  <div>
+                    <label
+                      htmlFor="message"
+                      className="block text-sm font-medium text-primary-text"
+                    >
+                      Message <span className="text-red-500">*</span>
+                    </label>
+                    <textarea
+                      id="message"
+                      name="message"
+                      rows={5}
+                      required
+                      value={formData.message}
+                      onChange={handleChange}
+                      disabled={status === "submitting"}
+                      className="mt-2 block w-full resize-none rounded-xl border-2 border-accent/30 bg-white px-4 py-3 text-primary-text placeholder-primary-text-muted/60 transition-all duration-200 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20 disabled:cursor-not-allowed disabled:opacity-60"
+                      placeholder="Tell me a bit about what you're looking for..."
+                    />
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={status === "submitting"}
+                    className="w-full rounded-full bg-accent px-8 py-4 text-base font-medium text-primary-text shadow-sm transition-all duration-200 hover:bg-accent-hover hover:shadow-md active:bg-accent-active disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
                   >
-                    Last Name
-                  </label>
-                  <input
-                    type="text"
-                    id="lastName"
-                    name="lastName"
-                    autoComplete="family-name"
-                    className="mt-2 block w-full rounded-xl border-2 border-accent/30 bg-white px-4 py-3 text-primary-text placeholder-primary-text-muted/60 transition-all duration-200 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20"
-                    placeholder="Doe"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-medium text-primary-text"
-                >
-                  Email
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  autoComplete="email"
-                  className="mt-2 block w-full rounded-xl border-2 border-accent/30 bg-white px-4 py-3 text-primary-text placeholder-primary-text-muted/60 transition-all duration-200 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20"
-                  placeholder="jane@example.com"
-                />
-              </div>
-
-              <div>
-                <label
-                  htmlFor="subject"
-                  className="block text-sm font-medium text-primary-text"
-                >
-                  Subject
-                </label>
-                <input
-                  type="text"
-                  id="subject"
-                  name="subject"
-                  className="mt-2 block w-full rounded-xl border-2 border-accent/30 bg-white px-4 py-3 text-primary-text placeholder-primary-text-muted/60 transition-all duration-200 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20"
-                  placeholder="Private session inquiry"
-                />
-              </div>
-
-              <div>
-                <label
-                  htmlFor="message"
-                  className="block text-sm font-medium text-primary-text"
-                >
-                  Message
-                </label>
-                <textarea
-                  id="message"
-                  name="message"
-                  rows={5}
-                  className="mt-2 block w-full resize-none rounded-xl border-2 border-accent/30 bg-white px-4 py-3 text-primary-text placeholder-primary-text-muted/60 transition-all duration-200 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20"
-                  placeholder="Tell me a bit about what you're looking for..."
-                />
-              </div>
-
-              <button
-                type="submit"
-                className="w-full rounded-full bg-accent px-8 py-4 text-base font-medium text-primary-text shadow-sm transition-all duration-200 hover:bg-accent-hover hover:shadow-md active:bg-accent-active sm:w-auto"
-              >
-                Send Message
-              </button>
-            </form>
+                    {status === "submitting" ? (
+                      <span className="flex items-center justify-center gap-2">
+                        <svg
+                          className="h-5 w-5 animate-spin"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                        >
+                          <circle
+                            className="opacity-25"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            strokeWidth="4"
+                          />
+                          <path
+                            className="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                          />
+                        </svg>
+                        Sending...
+                      </span>
+                    ) : (
+                      "Send Message"
+                    )}
+                  </button>
+                </form>
+              </>
+            )}
           </div>
         </div>
       </div>
     </Section>
   );
 }
-
