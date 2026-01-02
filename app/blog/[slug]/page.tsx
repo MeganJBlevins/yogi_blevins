@@ -1,14 +1,14 @@
-import { Metadata } from "next";
-import { notFound } from "next/navigation";
-import Image from "next/image";
-import Link from "next/link";
-import { type PortableTextBlock } from "@portabletext/react";
+import { Mandala } from "@/app/components";
 import PageLayout from "@/app/components/PageLayout";
 import Section from "@/app/components/Section";
-import { Mandala } from "@/app/components";
+import { urlFor } from "@/src/sanity/lib/image";
 import { sanityFetch } from "@/src/sanity/lib/live";
 import { POST_QUERY } from "@/src/sanity/lib/queries";
-import { urlFor } from "@/src/sanity/lib/image";
+import { type PortableTextBlock } from "@portabletext/react";
+import { Metadata } from "next";
+import Image from "next/image";
+import Link from "next/link";
+import { notFound } from "next/navigation";
 import { PortableTextRenderer } from "../components";
 
 interface Post {
