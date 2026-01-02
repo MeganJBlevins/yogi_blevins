@@ -1,3 +1,5 @@
+import { YouTubeFacade } from "@/app/components";
+
 interface VideoCardProps {
   video: {
     _id: string;
@@ -27,13 +29,7 @@ export default function VideoCard({ video }: VideoCardProps) {
   return (
     <article className="group flex flex-col overflow-hidden rounded-2xl bg-secondary-bg shadow-sm transition-all duration-300 hover:shadow-lg">
       <div className="relative aspect-video w-full overflow-hidden">
-        <iframe
-          src={`https://www.youtube.com/embed/${video.youtubeId}`}
-          title={video.title}
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          allowFullScreen
-          className="h-full w-full"
-        />
+        <YouTubeFacade youtubeId={video.youtubeId} title={video.title} />
       </div>
       <div className="flex flex-1 flex-col p-6">
         <div className="flex flex-wrap items-center gap-2">

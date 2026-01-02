@@ -1,4 +1,4 @@
-import { Mandala } from "@/app/components";
+import { Mandala, YouTubeFacade } from "@/app/components";
 import Section from "@/app/components/Section";
 import { sanityFetch } from "@/src/sanity/lib/live";
 import { RECENT_VIDEOS_QUERY } from "@/src/sanity/lib/queries";
@@ -27,13 +27,7 @@ function VideoCard({ video }: { video: Video }) {
   return (
     <div className="group flex flex-col overflow-hidden rounded-2xl bg-white/80 shadow-sm transition-all duration-300 hover:shadow-lg">
       <div className="relative aspect-video w-full overflow-hidden">
-        <iframe
-          src={`https://www.youtube.com/embed/${video.youtubeId}`}
-          title={video.title}
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          allowFullScreen
-          className="h-full w-full"
-        />
+        <YouTubeFacade youtubeId={video.youtubeId} title={video.title} />
       </div>
       <div className="flex flex-1 flex-col p-5">
         {video.category && (
