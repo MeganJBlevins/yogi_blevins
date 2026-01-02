@@ -286,6 +286,7 @@ chmod +x server-setup.sh
 ```
 
 This script installs:
+
 - Node.js 20.x
 - pnpm
 - PM2 (process manager)
@@ -309,14 +310,14 @@ sudo ln -sf /snap/bin/certbot /usr/bin/certbot
 
 Add these secrets to your GitHub repository (Settings → Secrets and variables → Actions):
 
-| Secret | Description |
-|--------|-------------|
-| `DROPLET_HOST` | Your droplet's IP address or hostname |
-| `DROPLET_USER` | SSH username (e.g., `root` or your username) |
-| `DROPLET_SSH_KEY` | Your private SSH key (entire key content) |
-| `DROPLET_SSH_PORT` | SSH port (default: 22) |
-| `NEXT_PUBLIC_SANITY_PROJECT_ID` | Sanity project ID (`xyhoulob`) |
-| `NEXT_PUBLIC_SANITY_DATASET` | Sanity dataset name (`production`) |
+| Secret                          | Description                                  |
+| ------------------------------- | -------------------------------------------- |
+| `DROPLET_HOST`                  | Your droplet's IP address or hostname        |
+| `DROPLET_USER`                  | SSH username (e.g., `root` or your username) |
+| `DROPLET_SSH_KEY`               | Your private SSH key (entire key content)    |
+| `DROPLET_SSH_PORT`              | SSH port (default: 22)                       |
+| `NEXT_PUBLIC_SANITY_PROJECT_ID` | Sanity project ID (`xyhoulob`)               |
+| `NEXT_PUBLIC_SANITY_DATASET`    | Sanity dataset name (`production`)           |
 
 #### Generate a Deploy Key
 
@@ -337,6 +338,7 @@ Deployments are triggered automatically when you push to the `main` branch. You 
 #### Deployment Process
 
 The GitHub Action will:
+
 1. Build the Next.js application
 2. Create a deployment package
 3. Copy files to your server via SCP

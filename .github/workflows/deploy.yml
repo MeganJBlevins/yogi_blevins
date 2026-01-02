@@ -57,7 +57,7 @@ jobs:
             public \
             package.json \
             pnpm-lock.yaml \
-            next.config.ts \
+            next.config.mjs \
             ecosystem.config.cjs
 
       - name: Copy files to server
