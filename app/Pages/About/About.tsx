@@ -8,13 +8,13 @@ interface AboutProps {
 }
 
 export default function About({ 
-  imageSrc = "/about-headshot.png",
+  imageSrc = "/about-me-image.png",
   mandalaColor = "#798777"
 }: AboutProps) {
   return (
     <Section
       id="about"
-      className="relative py-20 lg:py-32"
+      className="relative overflow-x-clip py-10 md:py-20 lg:py-32"
       style={{ backgroundColor: "#F8EDE3" }}
     >
       <div className="pointer-events-none absolute inset-0 opacity-[0.03]" aria-hidden="true">

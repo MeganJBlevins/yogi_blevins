@@ -177,7 +177,7 @@ export default async function Events({
   return (
     <Section
       id="events"
-      className="relative py-20 lg:py-32"
+      className="relative overflow-x-clip py-10 md:py-20 lg:py-32"
       style={{ backgroundColor: "#F8EDE3" }}
     >
       <div className="pointer-events-none absolute inset-0 opacity-[0.03]" aria-hidden="true">
@@ -189,10 +189,10 @@ export default async function Events({
       <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mb-12 text-center lg:mb-16">
           <h2 className="font-serif text-4xl font-bold tracking-tight text-primary-text md:text-5xl lg:text-6xl">
-            Upcoming Events
+            Upcoming Yoga Events
           </h2>
           <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-primary-text-muted md:text-xl">
-            Join me for workshops, classes, and retreats designed to deepen your practice and nurture your spirit.
+            Here are some events that you might be interested in! I'm not involved in all of them, or able to join all of them, but wish I could!
           </p>
         </div>
 

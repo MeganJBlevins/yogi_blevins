@@ -89,7 +89,7 @@ export default async function Videos({
   return (
     <Section
       id="videos"
-      className="relative overflow-hidden py-20 lg:py-32"
+      className="relative overflow-hidden py-10 md:py-20 lg:py-32"
       style={{ backgroundColor: "#A2B29F" }}
     >
       <div className="pointer-events-none absolute inset-0 opacity-[0.03]" aria-hidden="true">

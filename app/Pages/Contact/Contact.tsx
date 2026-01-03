@@ -86,7 +86,7 @@ export default function Contact({
   return (
     <Section
       id="contact"
-      className="relative py-20 lg:py-32"
+      className="relative overflow-x-clip py-10 md:py-20 lg:py-32"
       style={{ backgroundColor: "#A2B29F" }}
     >
       <div
