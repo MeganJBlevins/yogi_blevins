@@ -188,7 +188,7 @@ export default function Contact({
                   className="text-base leading-relaxed opacity-90"
                   style={{ color: "#798777" }}
                 >
-                  Whether you&apos;re curious about private sessions, group classes, or just want to say hello—drop me a line. I typically respond within 24-48 hours.
+                  Whether you&apos;re curious about private sessions, group classes, or just want to say hello—drop me a line.
                 </p>
               </div>
             </div>
