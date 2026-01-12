@@ -87,26 +87,26 @@ export default function Contact({
     <Section
       id="contact"
       className="relative overflow-x-clip py-10 md:py-20 lg:py-32"
-      style={{ backgroundColor: "#A2B29F" }}
+      style={{ backgroundColor: "#F8EDE3" }}
     >
       <div
-        className="pointer-events-none absolute -left-8 -top-20 h-[800px] w-[800px] opacity-15"
+        className="pointer-events-none absolute -left-8 -top-40 h-[800px] w-[800px] opacity-15"
         aria-hidden="true"
       >
-        <Mandala color="#F8EDE3" />
+        <Mandala color={mandalaColor} />
       </div>
 
       <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mb-12 text-right lg:mb-16">
           <h2
             className="font-serif text-4xl font-bold tracking-tight md:text-5xl lg:text-6xl"
-            style={{ color: "#F8EDE3" }}
+            style={{ color: "#798777" }}
           >
             Let&apos;s Connect
           </h2>
           <p
             className="mx-auto mt-6 text-lg leading-relaxed md:text-xl text-right"
-            style={{ color: "#F8EDE3" }}
+            style={{ color: "#798777" }}
           >
             Ready to start your yoga journey or have questions? I&apos;d love to hear from you.
           </p>
@@ -116,10 +116,10 @@ export default function Contact({
           <div className="flex flex-col justify-center">
             <div className="space-y-8">
               <div className="flex items-start gap-5">
-                <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl bg-[#F8EDE3]/20">
+                <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl bg-[#798777]/20">
                   <svg
                     className="h-6 w-6"
-                    style={{ color: "#F8EDE3" }}
+                    style={{ color: "#798777" }}
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -135,14 +135,14 @@ export default function Contact({
                 <div>
                   <h3
                     className="font-serif text-xl font-semibold"
-                    style={{ color: "#F8EDE3" }}
+                    style={{ color: "#798777" }}
                   >
                     Email
                   </h3>
                   <a
                     href={`mailto:${email}`}
                     className="mt-1 block text-lg transition-opacity duration-200 hover:opacity-80"
-                    style={{ color: "#F8EDE3" }}
+                    style={{ color: "#798777" }}
                   >
                     {email}
                   </a>
@@ -150,10 +150,10 @@ export default function Contact({
               </div>
 
               <div className="flex items-start gap-5">
-                <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl bg-[#F8EDE3]/20">
+                <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl bg-[#798777]/20">
                   <svg
                     className="h-6 w-6"
-                    style={{ color: "#F8EDE3" }}
+                    style={{ color: "#798777" }}
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -169,14 +169,14 @@ export default function Contact({
                 <div>
                   <h3
                     className="font-serif text-xl font-semibold"
-                    style={{ color: "#F8EDE3" }}
+                    style={{ color: "#798777" }}
                   >
                     Phone
                   </h3>
                   <a
                     href={`tel:${phone.replace(/[^0-9+]/g, "")}`}
                     className="mt-1 block text-lg transition-opacity duration-200 hover:opacity-80"
-                    style={{ color: "#F8EDE3" }}
+                    style={{ color: "#798777" }}
                   >
                     {phone}
                   </a>
@@ -186,7 +186,7 @@ export default function Contact({
               <div className="pt-4">
                 <p
                   className="text-base leading-relaxed opacity-90"
-                  style={{ color: "#F8EDE3" }}
+                  style={{ color: "#798777" }}
                 >
                   Whether you&apos;re curious about private sessions, group classes, or just want to say hello—drop me a line. I typically respond within 24-48 hours.
                 </p>
@@ -194,12 +194,13 @@ export default function Contact({
             </div>
           </div>
 
-          <div className="rounded-3xl bg-[#F8EDE3]/95 p-8 shadow-xl backdrop-blur-sm lg:p-10">
+          <div className="rounded-3xl p-8 shadow-xl backdrop-blur-sm lg:p-10" style={{ backgroundColor: "#798777" }}>
             {status === "success" ? (
               <div className="flex flex-col items-center justify-center py-12 text-center">
-                <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-green-100">
+                <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-[#F8EDE3]/20">
                   <svg
-                    className="h-8 w-8 text-green-600"
+                    className="h-8 w-8"
+                    style={{ color: "#F8EDE3" }}
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -212,31 +213,32 @@ export default function Contact({
                     />
                   </svg>
                 </div>
-                <h3 className="font-serif text-2xl font-semibold text-primary-text">
+                <h3 className="font-serif text-2xl font-semibold" style={{ color: "#F8EDE3" }}>
                   Message Sent!
                 </h3>
-                <p className="mt-3 text-primary-text-muted">
+                <p className="mt-3" style={{ color: "#F8EDE3", opacity: 0.9 }}>
                   Thank you for reaching out. I&apos;ll get back to you within 24-48 hours.
                 </p>
                 <button
                   onClick={resetForm}
-                  className="mt-8 rounded-full bg-accent px-6 py-3 text-sm font-medium text-primary-text transition-all duration-200 hover:bg-accent-hover"
+                  className="mt-8 rounded-full px-6 py-3 text-sm font-medium transition-all duration-200 hover:opacity-90"
+                  style={{ backgroundColor: "#F8EDE3", color: "#798777" }}
                 >
                   Send Another Message
                 </button>
               </div>
             ) : (
               <>
-                <h3 className="font-serif text-2xl font-semibold text-primary-text">
+                <h3 className="font-serif text-2xl font-semibold" style={{ color: "#F8EDE3" }}>
                   Send a Message
                 </h3>
-                <p className="mt-2 text-primary-text-muted">
+                <p className="mt-2" style={{ color: "#F8EDE3", opacity: 0.9 }}>
                   Fill out the form below and I&apos;ll get back to you soon.
                 </p>
 
                 {status === "error" && (
-                  <div className="mt-4 rounded-xl border border-red-200 bg-red-50 p-4">
-                    <p className="text-sm text-red-700">{errorMessage}</p>
+                  <div className="mt-4 rounded-xl border border-red-300/50 bg-red-100/20 p-4">
+                    <p className="text-sm" style={{ color: "#F8EDE3" }}>{errorMessage}</p>
                   </div>
                 )}
 
@@ -245,9 +247,10 @@ export default function Contact({
                     <div>
                       <label
                         htmlFor="firstName"
-                        className="block text-sm font-medium text-primary-text"
+                        className="block text-sm font-medium"
+                        style={{ color: "#F8EDE3" }}
                       >
-                        First Name <span className="text-red-500">*</span>
+                        First Name <span className="text-red-300">*</span>
                       </label>
                       <input
                         type="text"
@@ -258,16 +261,18 @@ export default function Contact({
                         value={formData.firstName}
                         onChange={handleChange}
                         disabled={status === "submitting"}
-                        className="mt-2 block w-full rounded-xl border-2 border-accent/30 bg-white px-4 py-3 text-primary-text placeholder-primary-text-muted/60 transition-all duration-200 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20 disabled:cursor-not-allowed disabled:opacity-60"
+                        className="mt-2 block w-full rounded-xl border-2 border-[#F8EDE3]/30 bg-[#F8EDE3]/10 px-4 py-3 transition-all duration-200 focus:border-[#F8EDE3]/60 focus:outline-none focus:ring-2 focus:ring-[#F8EDE3]/20 disabled:cursor-not-allowed disabled:opacity-60"
+                        style={{ color: "#F8EDE3" }}
                         placeholder="Jane"
                       />
                     </div>
                     <div>
                       <label
                         htmlFor="lastName"
-                        className="block text-sm font-medium text-primary-text"
+                        className="block text-sm font-medium"
+                        style={{ color: "#F8EDE3" }}
                       >
-                        Last Name <span className="text-red-500">*</span>
+                        Last Name <span className="text-red-300">*</span>
                       </label>
                       <input
                         type="text"
@@ -278,7 +283,8 @@ export default function Contact({
                         value={formData.lastName}
                         onChange={handleChange}
                         disabled={status === "submitting"}
-                        className="mt-2 block w-full rounded-xl border-2 border-accent/30 bg-white px-4 py-3 text-primary-text placeholder-primary-text-muted/60 transition-all duration-200 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20 disabled:cursor-not-allowed disabled:opacity-60"
+                        className="mt-2 block w-full rounded-xl border-2 border-[#F8EDE3]/30 bg-[#F8EDE3]/10 px-4 py-3 transition-all duration-200 focus:border-[#F8EDE3]/60 focus:outline-none focus:ring-2 focus:ring-[#F8EDE3]/20 disabled:cursor-not-allowed disabled:opacity-60"
+                        style={{ color: "#F8EDE3" }}
                         placeholder="Doe"
                       />
                     </div>
@@ -287,9 +293,10 @@ export default function Contact({
                   <div>
                     <label
                       htmlFor="email"
-                      className="block text-sm font-medium text-primary-text"
+                      className="block text-sm font-medium"
+                      style={{ color: "#F8EDE3" }}
                     >
-                      Email <span className="text-red-500">*</span>
+                      Email <span className="text-red-300">*</span>
                     </label>
                     <input
                       type="email"
@@ -300,7 +307,8 @@ export default function Contact({
                       value={formData.email}
                       onChange={handleChange}
                       disabled={status === "submitting"}
-                      className="mt-2 block w-full rounded-xl border-2 border-accent/30 bg-white px-4 py-3 text-primary-text placeholder-primary-text-muted/60 transition-all duration-200 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20 disabled:cursor-not-allowed disabled:opacity-60"
+                      className="mt-2 block w-full rounded-xl border-2 border-[#F8EDE3]/30 bg-[#F8EDE3]/10 px-4 py-3 transition-all duration-200 focus:border-[#F8EDE3]/60 focus:outline-none focus:ring-2 focus:ring-[#F8EDE3]/20 disabled:cursor-not-allowed disabled:opacity-60"
+                      style={{ color: "#F8EDE3" }}
                       placeholder="jane@example.com"
                     />
                   </div>
@@ -308,7 +316,8 @@ export default function Contact({
                   <div>
                     <label
                       htmlFor="subject"
-                      className="block text-sm font-medium text-primary-text"
+                      className="block text-sm font-medium"
+                      style={{ color: "#F8EDE3" }}
                     >
                       Subject
                     </label>
@@ -319,7 +328,8 @@ export default function Contact({
                       value={formData.subject}
                       onChange={handleChange}
                       disabled={status === "submitting"}
-                      className="mt-2 block w-full rounded-xl border-2 border-accent/30 bg-white px-4 py-3 text-primary-text placeholder-primary-text-muted/60 transition-all duration-200 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20 disabled:cursor-not-allowed disabled:opacity-60"
+                      className="mt-2 block w-full rounded-xl border-2 border-[#F8EDE3]/30 bg-[#F8EDE3]/10 px-4 py-3 transition-all duration-200 focus:border-[#F8EDE3]/60 focus:outline-none focus:ring-2 focus:ring-[#F8EDE3]/20 disabled:cursor-not-allowed disabled:opacity-60"
+                      style={{ color: "#F8EDE3" }}
                       placeholder="Private session inquiry"
                     />
                   </div>
@@ -327,9 +337,10 @@ export default function Contact({
                   <div>
                     <label
                       htmlFor="message"
-                      className="block text-sm font-medium text-primary-text"
+                      className="block text-sm font-medium"
+                      style={{ color: "#F8EDE3" }}
                     >
-                      Message <span className="text-red-500">*</span>
+                      Message <span className="text-red-300">*</span>
                     </label>
                     <textarea
                       id="message"
@@ -339,7 +350,8 @@ export default function Contact({
                       value={formData.message}
                       onChange={handleChange}
                       disabled={status === "submitting"}
-                      className="mt-2 block w-full resize-none rounded-xl border-2 border-accent/30 bg-white px-4 py-3 text-primary-text placeholder-primary-text-muted/60 transition-all duration-200 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20 disabled:cursor-not-allowed disabled:opacity-60"
+                      className="mt-2 block w-full resize-none rounded-xl border-2 border-[#F8EDE3]/30 bg-[#F8EDE3]/10 px-4 py-3 transition-all duration-200 focus:border-[#F8EDE3]/60 focus:outline-none focus:ring-2 focus:ring-[#F8EDE3]/20 disabled:cursor-not-allowed disabled:opacity-60"
+                      style={{ color: "#F8EDE3" }}
                       placeholder="Tell me a bit about what you're looking for..."
                     />
                   </div>
@@ -347,7 +359,8 @@ export default function Contact({
                   <button
                     type="submit"
                     disabled={status === "submitting"}
-                    className="w-full rounded-full bg-accent px-8 py-4 text-base font-medium text-primary-text shadow-sm transition-all duration-200 hover:bg-accent-hover hover:shadow-md active:bg-accent-active disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
+                    className="w-full rounded-full px-8 py-4 text-base font-medium shadow-sm transition-all duration-200 hover:opacity-90 hover:shadow-md disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
+                    style={{ backgroundColor: "#F8EDE3", color: "#798777" }}
                   >
                     {status === "submitting" ? (
                       <span className="flex items-center justify-center gap-2">

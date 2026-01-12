@@ -14,7 +14,6 @@ export default function HomePage() {
       <Videos />
       <Divider flipped />
       {/* <Events /> */}
-      <Divider />
       <Contact />
     </PageLayout>
   );
