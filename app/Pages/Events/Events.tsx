@@ -172,7 +172,7 @@ function EmptyState() {
 export default async function Events({
   mandalaColor = "#798777",
 }: EventsProps) {
-  const events = await sanityFetch<Event[]>({ query: RECENT_UPCOMING_EVENTS_QUERY });
+  const events = await sanityFetch<Event[]>({ query: RECENT_UPCOMING_EVENTS_QUERY, revalidate: 0 });
 
   return (
     <Section

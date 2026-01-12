@@ -4,30 +4,17 @@ import PageLayout from "@/app/components/PageLayout";
 import Section from "@/app/components/Section";
 import { Mandala } from "@/app/components";
 import { sanityFetch } from "@/src/sanity/lib/live";
-import { EVENT_CATEGORIES_QUERY } from "@/src/sanity/lib/queries";
+import { EVENT_CATEGORIES_QUERY, UPCOMING_EVENTS_BY_CATEGORY_QUERY } from "@/src/sanity/lib/queries";
 import { EventCard } from "../../components";
 import Link from "next/link";
+import { defineQuery } from "next-sanity";
 
-const EVENT_CATEGORY_QUERY = `*[_type == "eventCategory" && slug.current == $slug][0] {
+const EVENT_CATEGORY_QUERY = defineQuery(`*[_type == "eventCategory" && slug.current == $slug][0] {
   _id,
   title,
   slug,
   description
-}`;
-
-const UPCOMING_EVENTS_BY_CATEGORY_QUERY = `*[_type == "event" && category._ref == $categoryId && eventDate >= now()] | order(eventDate asc) {
-  _id,
-  title,
-  slug,
-  description,
-  eventDate,
-  endDate,
-  location,
-  registrationUrl,
-  image,
-  featured,
-  "category": category->{ _id, title, slug }
-}`;
+}`);
 
 interface EventCategory {
   _id: string;
@@ -94,6 +81,7 @@ export default async function EventCategoryPage({ params }: PageProps) {
     sanityFetch<Event[]>({
       query: UPCOMING_EVENTS_BY_CATEGORY_QUERY,
       params: { categoryId: category._id },
+      revalidate: 0,
     }),
     sanityFetch<EventCategory[]>({ query: EVENT_CATEGORIES_QUERY }),
   ]);

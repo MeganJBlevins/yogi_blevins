@@ -42,7 +42,7 @@ interface EventCategory {
 
 export default async function EventsPage() {
   const [events, categories] = await Promise.all([
-    sanityFetch<Event[]>({ query: UPCOMING_EVENTS_QUERY }),
+    sanityFetch<Event[]>({ query: UPCOMING_EVENTS_QUERY, revalidate: 0 }),
     sanityFetch<EventCategory[]>({ query: EVENT_CATEGORIES_QUERY }),
   ]);
 
