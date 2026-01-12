@@ -8,7 +8,7 @@ interface AboutProps {
 }
 
 export default function About({ 
-  imageSrc = "/about-grasshopper.png",
+  imageSrc = "/about-grasshopper.jpg",
   mandalaColor = "#798777"
 }: AboutProps) {
   return (
